@@ -4,12 +4,14 @@ import { Container, Table, Button } from "semantic-ui-react";
 
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
-import { Patient } from "../types";
+import { createSinglePatient, Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useStateValue } from "../state";
-
+import { isString } from "../types";
+import { useHistory } from "react-router-dom";
 const PatientListPage = () => {
+  const history = useHistory();
   const [{ patients }, dispatch] = useStateValue();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
@@ -30,11 +32,26 @@ const PatientListPage = () => {
       );
       dispatch({ type: "ADD_PATIENT", payload: newPatient });
       closeModal();
-    } catch (e) {
-      console.error(e.response?.data || 'Unknown Error');
-      setError(e.response?.data?.error || 'Unknown error');
+    } catch (e: any) {
+      console.error(e.response?.data || "Unknown Error");
+      setError(e.response?.data?.error || "Unknown error");
     }
   };
+
+  async function dispalySingleUser(userId: string) {
+    try {
+      const response = await axios.get(`${apiBaseUrl}/patients/${userId}`);
+      const diagnosisRespones = await axios.get(`${apiBaseUrl}/diagnosis`);
+      if (!response.data || !diagnosisRespones.data) return false;
+      dispatch({
+        type: "DISPLAY_PATIENT",
+        payload: createSinglePatient(response.data),
+      });
+      return true;
+    } catch (err: any) {
+      alert((err.response && err.response.data) || err);
+    }
+  }
 
   return (
     <div className="App">
@@ -53,7 +70,17 @@ const PatientListPage = () => {
         <Table.Body>
           {Object.values(patients).map((patient: Patient) => (
             <Table.Row key={patient.id}>
-              <Table.Cell>{patient.name}</Table.Cell>
+              <Table.Cell
+                style={{ cursor: "pointer" }}
+                onClick={async () => {
+                  if (isString(patient.id)) {
+                    if (!(await dispalySingleUser(patient.id))) return;
+                    history.push("./patient");
+                  }
+                }}
+              >
+                {patient.name}
+              </Table.Cell>
               <Table.Cell>{patient.gender}</Table.Cell>
               <Table.Cell>{patient.occupation}</Table.Cell>
               <Table.Cell>
