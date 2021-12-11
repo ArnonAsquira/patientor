@@ -22,10 +22,12 @@ const SinglePatient = ({ patient }: SinglePatientProps) => {
 
   async function createNewEntry(value: EntryFormValues): Promise<void> {
     try {
-      console.log("hello");
+      console.log(value, state.patient.id);
       const { data } = await axios.post<Entry>(
-        `${apiBaseUrl}patients/${value.id}/entries`
+        `${apiBaseUrl}/patients/${state.patient.id}/entries`,
+        value
       );
+      console.log(data);
       dispatch({ type: "ADD_ENTRY", payload: { id: value.id, entry: data } });
     } catch (err) {
       setEntryError("something went wrong");

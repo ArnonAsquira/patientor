@@ -21,7 +21,13 @@ export const SelectField = ({ name, label, options }: SelectFieldProps) => (
     <label>{label}</label>
     <Field as="select" name={name} className="ui dropdown">
       {options.map((option) => (
-        <option key={option.value} value={option.value}>
+        <option
+          key={option.value}
+          value={option.value}
+          onChange={(e) => {
+            console.log(e);
+          }}
+        >
           {option.label || option.value}
         </option>
       ))}

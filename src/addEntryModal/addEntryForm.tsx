@@ -34,23 +34,23 @@ export function AddEntryForm({ onSubmit, onCancel }: Props) {
         healthCheckRating: 1,
       }}
       onSubmit={onSubmit}
-      validate={(values) => {
-        const requiredError = "Field is required";
-        const errors: { [field: string]: string } = {};
-        if (!values.id) {
-          errors.name = requiredError;
-        }
-        if (!values.date) {
-          errors.datw = requiredError;
-        }
-        if (!values.specialist) {
-          errors.specialist = requiredError;
-        }
-        if (!values.description) {
-          errors.description = requiredError;
-        }
-        return errors;
-      }}
+      // validate={(values) => {
+      //   const requiredError = "Field is required";
+      //   const errors: { [field: string]: string } = {};
+      //   if (!values.id) {
+      //     errors.name = requiredError;
+      //   }
+      //   if (!values.date) {
+      //     errors.datw = requiredError;
+      //   }
+      //   if (!values.specialist) {
+      //     errors.specialist = requiredError;
+      //   }
+      //   if (!values.description) {
+      //     errors.description = requiredError;
+      //   }
+      //   return errors;
+      // }}
     >
       {() => {
         return (
@@ -59,12 +59,6 @@ export function AddEntryForm({ onSubmit, onCancel }: Props) {
               label="entry-type"
               name="entry-type"
               options={entryOptions}
-            />
-            <Field
-              label="Id"
-              placeholder="Id"
-              name="Id"
-              component={TextField}
             />
             <Field
               label="description"
@@ -79,9 +73,9 @@ export function AddEntryForm({ onSubmit, onCancel }: Props) {
               component={TextField}
             />
             <Field
-              label="speacialist"
-              placeholder="speacialist"
-              name="speacalist"
+              label="specialist"
+              placeholder="specialist"
+              name="specialist"
               component={TextField}
             />
             <Field
@@ -90,6 +84,19 @@ export function AddEntryForm({ onSubmit, onCancel }: Props) {
               name="diagnosisCodes"
               component={TextField}
             />
+            <Field
+              label="healthCheckRating"
+              placeholder="healthCheckRating"
+              name="healthCheckRating"
+              component={TextField}
+            />
+            <Field
+              label="employerName"
+              placeholder="employerName"
+              name="employerName"
+              component={TextField}
+            />
+
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">
